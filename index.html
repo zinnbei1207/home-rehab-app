@@ -5,54 +5,56 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>おうちリハビリ</title>
 <style>
-:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;color:#172033;background:#f4f6f8}*{box-sizing:border-box}body{margin:0}.app{max-width:620px;margin:auto;padding:24px 16px 48px}h1{margin:0 0 6px;font-size:28px}.date{color:#667085;margin-bottom:18px}.progress{background:#fff;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 4px 18px #0000000d}.progress-top{display:flex;justify-content:space-between;font-weight:700}.bar{height:10px;background:#e8ecf1;border-radius:999px;margin-top:12px;overflow:hidden}.bar>div{height:100%;width:0;background:#172033;border-radius:999px;transition:.25s}.card{background:#fff;border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 4px 18px #0000000d}.card.done{outline:2px solid #172033}.card h2{font-size:19px;margin:0 0 4px}.target{color:#667085;margin:0 0 14px}.sets{display:grid;grid-template-columns:1fr 1fr;gap:10px}.set{border:1px solid #d9dee7;background:#fff;border-radius:14px;padding:14px 8px;font-size:16px;font-weight:700;cursor:pointer}.set.checked{background:#172033;color:#fff;border-color:#172033}.complete{display:none;text-align:center;background:#fff;border-radius:18px;padding:20px;margin-top:16px;font-size:20px;font-weight:800}.complete.show{display:block}.note{text-align:center;color:#7b8494;font-size:12px;margin-top:18px}button{font:inherit}
+:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;color:#172033;background:#f4f6f8}*{box-sizing:border-box}body{margin:0}.app{max-width:620px;margin:auto;padding:24px 16px 48px}h1{margin:0 0 6px;font-size:28px}.date{color:#667085;margin-bottom:18px}.progress,.card,.complete{background:#fff;border-radius:18px;box-shadow:0 4px 18px #0000000d}.progress{padding:18px;margin-bottom:16px}.progress-top{display:flex;justify-content:space-between;font-weight:700}.bar{height:10px;background:#e8ecf1;border-radius:999px;margin-top:12px;overflow:hidden}.bar>div{height:100%;width:0;background:#172033;border-radius:999px;transition:.25s}.card{padding:18px;margin:12px 0}.card.done{outline:2px solid #172033}.card h2{font-size:19px;margin:0 0 4px}.target{color:#667085;margin:0 0 12px}.memo{background:#f6f7f9;border-radius:14px;padding:12px;margin:0 0 14px}.memo-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}.memo-title{font-size:13px;font-weight:800;color:#596273}.memo-text{margin:0;white-space:pre-wrap;line-height:1.55;font-size:14px}.edit{border:0;background:transparent;color:#3b65a7;font-weight:700;padding:4px;cursor:pointer}.memo-editor{display:none}.memo-editor.open{display:block}.memo-editor textarea{width:100%;min-height:86px;resize:vertical;border:1px solid #cfd5df;border-radius:10px;padding:10px;font:inherit;line-height:1.5;background:#fff}.memo-actions{display:flex;gap:8px;margin-top:8px}.smallbtn{border:1px solid #cfd5df;background:#fff;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer}.smallbtn.save{background:#172033;color:#fff;border-color:#172033}.sets{display:grid;grid-template-columns:1fr 1fr;gap:10px}.set{border:1px solid #d9dee7;background:#fff;border-radius:14px;padding:14px 8px;font-size:16px;font-weight:700;cursor:pointer}.set.checked{background:#172033;color:#fff;border-color:#172033}.complete{display:none;text-align:center;padding:20px;margin-top:16px;font-size:20px;font-weight:800}.complete.show{display:block}.note{text-align:center;color:#7b8494;font-size:12px;margin-top:18px}button{font:inherit}
 </style>
 </head>
 <body>
 <main class="app">
 <h1>🏠 おうちリハビリ</h1>
 <div class="date" id="date"></div>
-<section class="progress">
-<div class="progress-top"><span>今日の達成度</span><span id="score">0 / 4</span></div>
-<div class="bar"><div id="bar"></div></div>
-</section>
+<section class="progress"><div class="progress-top"><span>今日の達成度</span><span id="score">0 / 4</span></div><div class="bar"><div id="bar"></div></div></section>
 <div id="list"></div>
 <div class="complete" id="complete">🎉 今日のリハビリ完了！</div>
-<div class="note">チェックはこの端末のブラウザに日付ごとに保存されます。</div>
+<div class="note">チェックと自分用メモは、この端末のブラウザに保存されます。</div>
 </main>
 <script>
 const exercises=[
- {name:'お尻上げ',target:'10回 × 2セット'},
- {name:'横向きで脚を上げる運動',target:'10回 × 2セット'},
- {name:'座って膝を伸ばす運動',target:'10回 × 2セット'},
- {name:'立って踵を上げる運動',target:'10回 × 2セット'}
+ {name:'お尻上げ',target:'10回 × 2セット',memo:'座るようにしてお尻を下げる。垂直に。'},
+ {name:'横向きで脚を上げる運動',target:'10回 × 2セット',memo:'ここをタップして、自分が分かりやすい説明を追加できます。'},
+ {name:'座って膝を伸ばす運動',target:'10回 × 2セット',memo:'ここをタップして、自分が分かりやすい説明を追加できます。'},
+ {name:'立って踵を上げる運動',target:'10回 × 2セット',memo:'ここをタップして、自分が分かりやすい説明を追加できます。'}
 ];
 const pad=n=>String(n).padStart(2,'0');
 const now=new Date();
 const dayKey=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
 document.getElementById('date').textContent=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 const storageKey='homeRehab:'+dayKey;
+const memoKey='homeRehab:memos';
 let state=JSON.parse(localStorage.getItem(storageKey)||'null')||exercises.map(()=>[false,false]);
 if(!Array.isArray(state)||state.length!==exercises.length) state=exercises.map(()=>[false,false]);
+let memos=JSON.parse(localStorage.getItem(memoKey)||'null')||exercises.map(x=>x.memo);
+if(!Array.isArray(memos)||memos.length!==exercises.length) memos=exercises.map(x=>x.memo);
 const list=document.getElementById('list');
-function save(){localStorage.setItem(storageKey,JSON.stringify(state));}
+function saveState(){localStorage.setItem(storageKey,JSON.stringify(state));}
+function saveMemos(){localStorage.setItem(memoKey,JSON.stringify(memos));}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function render(){
  list.innerHTML='';
  exercises.forEach((ex,i)=>{
   const card=document.createElement('section');
   const done=state[i].every(Boolean);
   card.className='card'+(done?' done':'');
-  card.innerHTML=`<h2>${i+1}. ${ex.name}</h2><p class="target">${ex.target}</p><div class="sets">${[0,1].map(s=>`<button class="set ${state[i][s]?'checked':''}" data-i="${i}" data-s="${s}">${state[i][s]?'✓ ':''}${s+1}セット目</button>`).join('')}</div>`;
+  card.innerHTML=`<h2>${i+1}. ${ex.name}</h2><p class="target">${ex.target}</p><div class="memo"><div class="memo-head"><span class="memo-title">📝 自分用メモ</span><button class="edit" data-edit="${i}">編集</button></div><p class="memo-text">${esc(memos[i])}</p><div class="memo-editor" id="editor-${i}"><textarea>${esc(memos[i])}</textarea><div class="memo-actions"><button class="smallbtn save" data-save="${i}">保存</button><button class="smallbtn" data-cancel="${i}">キャンセル</button></div></div></div><div class="sets">${[0,1].map(s=>`<button class="set ${state[i][s]?'checked':''}" data-i="${i}" data-s="${s}">${state[i][s]?'✓ ':''}${s+1}セット目</button>`).join('')}</div>`;
   list.appendChild(card);
  });
  const completed=state.filter(x=>x.every(Boolean)).length;
  document.getElementById('score').textContent=`${completed} / ${exercises.length}`;
  document.getElementById('bar').style.width=`${completed/exercises.length*100}%`;
  document.getElementById('complete').classList.toggle('show',completed===exercises.length);
- document.querySelectorAll('.set').forEach(btn=>btn.onclick=()=>{
-  const i=Number(btn.dataset.i),s=Number(btn.dataset.s);
-  state[i][s]=!state[i][s]; save(); render();
- });
+ document.querySelectorAll('.set').forEach(btn=>btn.onclick=()=>{const i=+btn.dataset.i,s=+btn.dataset.s;state[i][s]=!state[i][s];saveState();render();});
+ document.querySelectorAll('[data-edit]').forEach(btn=>btn.onclick=()=>document.getElementById('editor-'+btn.dataset.edit).classList.add('open'));
+ document.querySelectorAll('[data-cancel]').forEach(btn=>btn.onclick=()=>document.getElementById('editor-'+btn.dataset.cancel).classList.remove('open'));
+ document.querySelectorAll('[data-save]').forEach(btn=>btn.onclick=()=>{const i=+btn.dataset.save;const editor=document.getElementById('editor-'+i);memos[i]=editor.querySelector('textarea').value.trim()||'（メモなし）';saveMemos();render();});
 }
 render();
 </script>
